@@ -76,9 +76,9 @@ class Socialio {
   protected $secret;
 
   /**
-   * The Social.io Application ID.
+   * The Social.io Application Name.
    */
-  protected $appId;
+  protected $appName;
   
   /**
    * The message that should be shown while a user is redirected during the connect process.
@@ -106,7 +106,7 @@ class Socialio {
    * The configuration:
    * - clientId: the client ID
    * - password: the client password
-   * - appId: the Social.io Application ID
+   * - appName: the Social.io Application ID
    * - redirectMessage: the message that should be shown while a user is redirected during the connect process
    * - incomingRequest: the incoming request from a supported Social Network
    * 
@@ -117,14 +117,14 @@ class Socialio {
   public function __construct($config) {
     $this->setClientId($config['clientId']);
     $this->setPassword($config['password']);
-    $this->setAppId($config['appId']);
+    $this->setAppName($config['appName']);
     if (isset($config['redirectMessage'])) {
       $this->setRedirectMessage($config['redirectMessage']);
     } else {
       $this->setRedirectMessage("Loading application...");
     }
     $this->setAccessToken($this->requestToken());
-    $this->setIncomingRequest($config['incomingRequest']);
+    $this->setIncomingRequest($_REQUEST);
   }
 
   /**
@@ -132,7 +132,7 @@ class Socialio {
    * This process may need a redirect that is transparently taken care of for you.
    */
   public function connect() {
-    $plain_response = $this->postRequest(self::$DOMAIN_MAP['api']."app/".$this->getAppId()."/user", $this->getIncomingRequest());
+    $plain_response = $this->postRequest(self::$DOMAIN_MAP['api']."app/".$this->getAppName()."/user", $this->getIncomingRequest());
 
     $response = json_decode($plain_response, true);
 
@@ -163,20 +163,24 @@ class Socialio {
       }
     }
 
-    $plain_response = $this->makeRequest(self::$DOMAIN_MAP['api']."app/".$this->getAppId()."/user/".$this->getUserId().$path, $params, null, isset($method));
+    $plain_response = $this->makeRequest(self::$DOMAIN_MAP['api']."app/".$this->getAppName()."/user/".$this->getUserId().$path, $params, null, isset($method));
     return json_decode($plain_response, true);
   }
   
-  public function getUserProfile() {
-    return $this->api("/", array("fields" => "name,picture"));
+  public function getUserProfile($fields) {
+    return $this->api("/", array("fields" => $fields));
   }
 
-  public function getFriends() {
-    return $this->api("/friends", array("fields" => "name,picture,user_id"));
+  public function getFriends($fields) {
+    return $this->api("/friends", array("fields" => $fields));
   }
 
   public function getUserParams() {
     return $this->api("/param");
+  }
+
+  public function deleteParams() {
+    return $this->api("/params", null, "DELETE");
   }
 
   public function getUserRequests() {
@@ -193,10 +197,6 @@ class Socialio {
 
   public function deleteRequests() {
     return $this->api("/request", null, "DELETE");
-  }
-
-  public function deleteParams() {
-    return $this->api("/params", null, "DELETE");
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -239,13 +239,13 @@ class Socialio {
     return $this->password;
   }
 
-  private function setAppId($appId) {
-    $this->appId = $appId;
+  private function setAppName($appName) {
+    $this->appName = $appName;
     return $this;
   }
 
-  public function getAppId() {
-    return $this->appId;
+  public function getAppName() {
+    return $this->appName;
   }
 
   private function setRedirectMessage($redirectMessage) {
@@ -309,12 +309,12 @@ class Socialio {
     return $response["token"];
   }
 
-  private function makeRequest($url, $GET_Params, $ch=null, $post=null) {
+  private function makeRequest($url, $params, $ch=null, $post=null) {
     if (!$ch) {
       $ch = curl_init();
     }
 
-    $url = empty($GET_Params) ? $url : $url."?".http_build_query($GET_Params, null, '&');
+    $url = empty($params) ? $url : $url."?".http_build_query($params, null, '&');
 
 
     $opts = self::$CURL_OPTS;
@@ -334,7 +334,7 @@ class Socialio {
 
     if($post) {
       $opts[CURLOPT_POST] = true;
-      $query_string = http_build_query($GET_Params, null, '&');
+      $query_string = http_build_query($params, null, '&');
       // bug in php5 http_build_query method causes nested arrays to be converted into arr[0]= instead of arr[]=
       $query_string = preg_replace('/%5B(?:[0-9]|[1-9][0-9]+)%5D=/', '[]=', $query_string);
       $opts[CURLOPT_POSTFIELDS] = $query_string;

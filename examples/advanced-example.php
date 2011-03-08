@@ -19,10 +19,9 @@
 require '../src/socialio.php';
 
 $socialio = new Socialio(array(
-	'clientId' => 'YOUR CLIENT NAME',
-	'password' => 'YOUR CLIENT PASSWORD',
-	'appId' => 'YOUR Social.io APP NAME',
-	'incomingRequest' => $_REQUEST,
+  'clientId' => 'YOUR CLIENT NAME',
+  'password' => 'YOUR CLIENT PASSWORD',
+  'appName' => 'YOUR Social.io APP NAME'
 ));
 
 try {
@@ -33,7 +32,7 @@ try {
   exit();
 }
 
-$friends = $socialio->getFriends();
+$friends = $socialio->getFriends("user_id,name,picture");
 ?>
 
 <!doctype html>
@@ -143,7 +142,7 @@ $friends = $socialio->getFriends();
         <div><a href="#" onclick="loadUserProfile(); return false;">User Profile</a></div>
         <div><a href="#" onclick="loadUserFriends(); return false;">User Friends</a></div>
     </p>
-    <p><h4>User Profile:</h4> <?php $profile = $socialio->getUserProfile();
+    <p><h4>User Profile:</h4> <?php $profile = $socialio->getUserProfile("user_id,name,picture");
                             echo("<table border='1'>");
                             echo("<tr><td>name</td><td>".$profile["name"]."</td></tr>");
                             echo("<tr><td>picture</td><td>".$profile["picture"]."</td></tr>");
