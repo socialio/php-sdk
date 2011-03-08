@@ -180,7 +180,7 @@ class Socialio {
   }
 
   public function deleteParams() {
-    return $this->api("/params", null, "DELETE");
+    return $this->api("/param", null, "DELETE");
   }
 
   public function getUserRequests() {
