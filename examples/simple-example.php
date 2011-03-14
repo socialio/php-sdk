@@ -60,7 +60,7 @@ $friends = $socialio->getFriends("name,picture");
   <body>
     <h1>The Social.io Simple Example</h1>
     <p>User ID: <?php echo($socialio->getUserId("name,picture")); ?></p>
-    <p><h4>User Profile:</h4> <?php $profile = $socialio->getUserProfile();
+    <p><h4>User Profile:</h4> <?php $profile = $socialio->getUserProfile("user_id,name,picture");
                             echo("<table border='1'>");
                             echo("<tr><td>name</td><td>".$profile["name"]."</td></tr>");
                             echo("<tr><td>picture</td><td>".$profile["picture"]."</td></tr>");
