@@ -67,19 +67,21 @@ $friends = $socialio->getFriends("user_id,name,picture");
         };
 
         function inviteFriends(){
-            SIO.ui({'method':'friends.invite', 'title':'Invite your friends!', 'message':'Hello friends, check this out!', 'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png'}, function(response){alert(response.status);});
+            SIO.ui({'method':'friends.invite', 'title':'Invite your friends!', 
+                'message':'Hello friends, check this out!', 'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
+                'params':[{name:'foo', value:'bar'}]}, function(response){alert(response.status);});
         };
 
         function publishStream(){
-           SIO.ui({'method':'feed.publish', 'title':'Check this out!',
-               'name':'Christoph needs the finest chocolate for Andre!',
-               'caption': 'Christoph needs gourmet chocolate for Andre\'s signature recipes!',
-               'description':'This a description.',
-               'message':'Bitte helft mir!',
-               'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
-               'action_link':'Send them Chocolate',
-               'params':[{'name':'trackCode', value:'abcde'}, {name:'someId', value:'1234'}]},
-                 function(response){alert(response.status);});
+            SIO.ui({'method':'feed.publish', 'title':'Check this out!',
+                'name':'Christoph needs the finest chocolate for Andre!',
+                'caption': 'Christoph needs gourmet chocolate for Andre\'s signature recipes!',
+                'description':'This a description.',
+                'message':'Bitte helft mir!',
+                'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
+                'action_link':'Send them Chocolate',
+                'params':[{'name':'trackCode', value:'abcde'}, {name:'someId', value:'1234'}]},
+                  function(response){alert(response.status);});
         };
 
         function postToWall(){
@@ -105,9 +107,9 @@ $friends = $socialio->getFriends("user_id,name,picture");
                          'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
                          'action_link':'Accept Gift',
                          'params':[{'name':'giftId', value:'abcde'}]};
-            if (filters)
-              reqObj['filters'] = filters;
-            SIO.ui(reqObj, function(response){alert(response.status + ', recipients:' + printf(response.uris));});
+           if (filters)
+             reqObj['filters'] = filters;
+           SIO.ui(reqObj, function(response){alert(response.status + ', recipients:' + printf(response.uris));});
         };
 
         function sendRequest(){

@@ -78,4 +78,3 @@ $friends = $socialio->getFriends("name,picture");
     </p>
   </body>
 </html>
-

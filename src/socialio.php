@@ -101,6 +101,11 @@ class Socialio {
   protected $incomingRequest;
 
   /**
+   * The incoming Social Network request.
+   */
+  protected $body;
+
+  /**
    * Initialize the Social.io SDK.
    * 
    * The configuration:
@@ -125,6 +130,7 @@ class Socialio {
     }
     $this->setAccessToken($this->requestToken());
     $this->setIncomingRequest($_REQUEST);
+    $this->setBody(@file_get_contents('php://input'));
   }
 
   /**
@@ -132,7 +138,7 @@ class Socialio {
    * This process may need a redirect that is transparently taken care of for you.
    */
   public function connect() {
-    $plain_response = $this->postRequest(self::$DOMAIN_MAP['api']."app/".$this->getAppName()."/user", $this->getIncomingRequest());
+    $plain_response = $this->postRequest(self::$DOMAIN_MAP['api']."app/".$this->getAppName()."/user", $this->getIncomingRequest(), $this->getBody());
 
     $response = json_decode($plain_response, true);
 
@@ -294,6 +300,15 @@ class Socialio {
     return $this->incomingRequest;
   }
 
+  private function setBody($body) {
+    $this->body = $body;
+    return $this;
+  }
+
+  private function getBody() {
+    return $this->body;
+  }
+
   private function setUserToken($userToken) {
     $this->userToken = $userToken;
     return $this;
@@ -309,7 +324,7 @@ class Socialio {
     return $response["token"];
   }
 
-  private function makeRequest($url, $params, $ch=null, $post=null) {
+  private function makeRequest($url, $params, $ch=null, $post=null, $body=null) {
     if (!$ch) {
       $ch = curl_init();
     }
@@ -337,7 +352,14 @@ class Socialio {
       $query_string = http_build_query($params, null, '&');
       // bug in php5 http_build_query method causes nested arrays to be converted into arr[0]= instead of arr[]=
       $query_string = preg_replace('/%5B(?:[0-9]|[1-9][0-9]+)%5D=/', '[]=', $query_string);
-      $opts[CURLOPT_POSTFIELDS] = $query_string;
+      if(!empty($body)) {
+        $existing_headers = $opts[CURLOPT_HTTPHEADER];
+        $existing_headers[] = 'Content-Type: application/json'; //content type is not being set automatically for some reason
+        $opts[CURLOPT_HTTPHEADER] = $existing_headers;
+        $opts[CURLOPT_POSTFIELDS] = $body;
+      } 
+      else
+        $opts[CURLOPT_POSTFIELDS] = $query_string;
     }
 
     curl_setopt_array($ch, $opts);
@@ -349,12 +371,12 @@ class Socialio {
     return $response;
   }
 
-  private function postRequest($url, $params = null, $ch = null) {
-    return $this->makeRequest($url, $params, $ch, true);
+  private function postRequest($url, $params = null, $body = null, $ch = null) {
+    return $this->makeRequest($url, $params, $ch, true, $body);
   }
 
   private function getRequest($url, $params = null, $ch = null) {
-    return $this->makeRequest($url, $params, $ch, false);
+    return $this->makeRequest($url, $params, $ch, false, null);
   }
 }
 
