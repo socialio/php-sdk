@@ -16,7 +16,7 @@
  * under the License.
  */
 
-require 'socialio.php';
+require '../src/socialio.php';
 
 $socialio = new Socialio(array(
   'clientId' => 'YOUR CLIENT NAME',
@@ -67,7 +67,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
         };
 
         function inviteFriends(){
-            SIO.ui({'method':'friends.invite', 'title':'Invite your friends!', 
+            SIO.ui({'method':'friends.invite', 'title':'Invite your friends!',
                 'message':'Hello friends, check this out!', 'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
                 'params':[{name:'foo', value:'bar'}]}, function(response){alert(response.status);});
         };
@@ -97,7 +97,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
                   function(response){alert(response.status);});
         };
 
-        function sendRequestToAFriend(filters){
+        function sendRequestToAFriend(){
            var reqObj = {'method':'request.send', 'title':'Check this out!',
                          'name':'Awesome Gift Request',
                          'recipient_ids':['<?php echo($friends['friends'][0]['user_id']) ?>'],
@@ -107,21 +107,22 @@ $friends = $socialio->getFriends("user_id,name,picture");
                          'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
                          'action_link':'Accept Gift',
                          'params':[{'name':'giftId', value:'abcde'}]};
-           if (filters)
-             reqObj['filters'] = filters;
            SIO.ui(reqObj, function(response){alert(response.status + ', recipients:' + printf(response.uris));});
         };
 
-        function sendRequest(){
-            SIO.ui({'method':'request.send', 'title':'Check this out!',
+        function sendRequest(filters){
+            var reqObj = {'method':'request.send', 'title':'Check this out!',
                 'name':'Awesome Gift Request',
                 'caption': 'I\'m a caption',
                 'description':'I am in good mode!',
                 'message':'Hello!',
                 'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
                 'action_link':'Accept Gift',
-                'params':[{'name':'giftId', value:'abcde'}]},
-                  function(response){alert(response.status + ', recipients:' + printf(response.uris));});
+                'params':[{'name':'giftId', value:'abcde'}]};
+
+            if (filters)
+             reqObj['filters'] = filters;
+            SIO.ui(reqObj, function(response){alert(response.status + ', recipients:' + printf(response.uris))});
         };
 
         function printf(obj){
@@ -142,7 +143,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
         <div><a href="#" onclick="publishStream(); return false;">Publish Stream</a></div>
         <div><a href="#" onclick="postToWall(); return false;">Post To A Friends Wall</a></div>
         <div><a href="#" onclick="sendRequestToAFriend(); return false;">Send Request to a Friend</a></div>
-        <div><a href="#" onclick="sendRequestToAFriend(['app_non_users']); return false;">Send Request to a Non App Friend</a></div>
+        <div><a href="#" onclick="sendRequest(['app_non_users']); return false;">Send Request to a Non App Friend</a></div>
         <div><a href="#" onclick="sendRequest(); return false;">Send Request</a></div>
         <div><a href="#" onclick="loadUserProfile(); return false;">User Profile</a></div>
         <div><a href="#" onclick="loadUserFriends(); return false;">User Friends</a></div>
