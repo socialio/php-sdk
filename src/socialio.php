@@ -219,9 +219,16 @@ class Socialio {
       Header( "Location: " . $response["uri"]);
       exit();
     } else if(strcmp($response["execute"], "output") == 0) {
-      echo($this->getRedirectMessage());
-      echo($response["content"]);
-      exit();
+        $headers = $response["headers"];
+        foreach($headers as $key => $value) {
+            Header($key.': '.$value);            
+        }
+        $cookies = $response["cookies"];
+        foreach($cookies as $key => $value) {
+            setcookie($key, $value);
+        }
+        echo($response["content"]);
+        exit();
     } else if(strcmp($response["execute"], "nothing") == 0) {
       throw new SocialIoApiException($response);
     }
