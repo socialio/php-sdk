@@ -69,7 +69,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
         function inviteFriends(){
             SIO.ui({'method':'friends.invite', 'title':'Invite your friends!',
                 'message':'Hello friends, check this out!', 'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
-                'params':[{name:'foo', value:'bar'}]}, function(response){alert(response.status);});
+                'params':[{name:'foo', value:'bar'}]}, function(response){alert(printf(response));});
         };
 
         function publishStream(){
@@ -125,6 +125,10 @@ $friends = $socialio->getFriends("user_id,name,picture");
             SIO.ui(reqObj, function(response){alert(response.status + ', recipients:' + printf(response.uris))});
         };
 
+        function resizeHeight(height) {
+            SIO.ui({'method':'window.resize', 'height':height});
+        }
+
         function printf(obj){
             var output = '';
             for (property in obj) {
@@ -147,6 +151,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
         <div><a href="#" onclick="sendRequest(); return false;">Send Request</a></div>
         <div><a href="#" onclick="loadUserProfile(); return false;">User Profile</a></div>
         <div><a href="#" onclick="loadUserFriends(); return false;">User Friends</a></div>
+        <div><a href="#" onclick="resizeHeight(200); return false;">Resize Height to 200px</a></div>
     </p>
     <p><h4>User Profile:</h4> <?php $profile = $socialio->getUserProfile("user_id,name,picture");
                             echo("<table border='1'>");

@@ -52,7 +52,7 @@ class Socialio {
   );
 
   public static $DOMAIN_MAP = array(
-    'api'	=> 'http://social.io/',
+    'api'	=> 'http://localhost:8080/',
   );
 
   /**
