@@ -193,6 +193,10 @@ $friends = $socialio->getFriends("user_id,name,picture");
     </p>
 
   <script type="text/javascript">
+        window.socialNetworkInit = function(){
+            SIO.ui({method:'window.resize'});
+        }
+        
         window.sioAsyncInit = function() {
             SIO.init({user_token: '<?php echo($socialio->getUserToken()) ?>'});
         };
