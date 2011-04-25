@@ -68,7 +68,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
 
         function inviteFriends(){
             SIO.ui({'method':'friends.invite', 'title':'Invite your friends!',
-                'message':'Hello friends, check this out!', 'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
+                'message':'Hello friends, check this out!', 'picture':'http://static.social.io/images/logo.png',
                 'params':[{name:'foo', value:'bar'}]}, function(response){alert(printf(response));});
         };
 
@@ -78,7 +78,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
                 'caption': 'Christoph needs gourmet chocolate for Andre\'s signature recipes!',
                 'description':'This a description.',
                 'message':'Bitte helft mir!',
-                'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
+                'picture':'http://static.social.io/images/logo.png',
                 'action_link':'Send them Chocolate',
                 'params':[{'name':'trackCode', value:'abcde'}, {name:'someId', value:'1234'}]},
                   function(response){alert(response.status);});
@@ -91,7 +91,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
                 'caption': 'I\'m a caption',
                 'description':'I am in good mode!',
                 'message':'Hello!',
-                'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
+                'picture':'http://static.social.io/images/logo.png',
                 'action_link':'Click Me',
                 'params':[{'name':'trackCode', value:'abcde'}, {name:'someId', value:'1234'}]},
                   function(response){alert(response.status);});
@@ -104,7 +104,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
                          'caption': 'I\'m a caption',
                          'description':'I am in good mode!',
                          'message':'Hello!',
-                         'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
+                         'picture':'http://static.social.io/images/logo.png',
                          'action_link':'Accept Gift',
                          'params':[{'name':'giftId', value:'abcde'}]};
            SIO.ui(reqObj, function(response){alert(response.status + ', recipients:' + printf(response.uris));});
@@ -116,7 +116,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
                 'caption': 'I\'m a caption',
                 'description':'I am in good mode!',
                 'message':'Hello!',
-                'picture':'http://static-test.platogo.com/games/1/achievements/2038714.png',
+                'picture':'http://static.social.io/images/logo.png',
                 'action_link':'Accept Gift',
                 'params':[{'name':'giftId', value:'abcde'}]};
 
