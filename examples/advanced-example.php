@@ -67,43 +67,47 @@ $friends = $socialio->getFriends("user_id,name,picture");
         };
 
         function inviteFriends(){
-            SIO.ui({'method':'friends.invite', 'title':'Invite your friends!',
-                'message':'Hello friends, check this out!', 'picture':'http://static.social.io/images/logo.png',
-                'params':[{name:'foo', value:'bar'}]}, function(response){alert(printf(response));});
+            SIO.ui({'method':'friends.invite',
+                    'title':'Select friends to send social.io invites.',
+                    'message':'Hello friends, check this out!',
+                    'description':'Add friends to get more gifts',
+                    'picture':'http://static.social.io/images/logo.png',
+                    'params':[{'name':'foo', value:'bar'}]},
+                    function(response){alert(printf(response));});
         };
 
         function publishStream(){
-            SIO.ui({'method':'feed.publish', 'title':'Check this out!',
+            SIO.ui({'method':'feed.publish', 'title':'Ask your friends to send you some chocolate!',
                 'name':'Christoph needs the finest chocolate for Andre!',
                 'caption': 'Christoph needs gourmet chocolate for Andre\'s signature recipes!',
                 'description':'This a description.',
-                'message':'Bitte helft mir!',
+                'message':'Please send me some chocolate!',
                 'picture':'http://static.social.io/images/logo.png',
-                'action_link':'Send them Chocolate',
+                'action_link':'Send Chocolate',
                 'params':[{'name':'trackCode', value:'abcde'}, {name:'someId', value:'1234'}]},
                   function(response){alert(response.status);});
         };
 
         function postToWall(){
-            SIO.ui({'method':'wall.post', 'title':'Check this out!',
-                'name':'Awesome Wall Post',
+            SIO.ui({'method':'wall.post', 'title':'Ask your friends to send you some chocolate!',
+                'name':'Christoph needs the finest chocolate for Andre!',
                 'recipient_ids':['<?php echo($friends['friends'][0]['user_id']) ?>'],
-                'caption': 'I\'m a caption',
-                'description':'I am in good mode!',
-                'message':'Hello!',
+                'caption': 'Christoph needs gourmet chocolate for Andre\'s signature recipes!',
+                'description':'This a description.',
+                'message':'Please send me some chocolate!',
                 'picture':'http://static.social.io/images/logo.png',
-                'action_link':'Click Me',
+                'action_link':'Send Chocolate',
                 'params':[{'name':'trackCode', value:'abcde'}, {name:'someId', value:'1234'}]},
                   function(response){alert(response.status);});
         };
 
         function sendRequestToAFriend(){
-           var reqObj = {'method':'request.send', 'title':'Check this out!',
-                         'name':'Awesome Gift Request',
+           var reqObj = {'method':'request.send', 'title':'Send this gift to a friend!',
+                         'name':'Aerosol Can',
                          'recipient_ids':['<?php echo($friends['friends'][0]['user_id']) ?>'],
-                         'caption': 'I\'m a caption',
-                         'description':'I am in good mode!',
-                         'message':'Hello!',
+                         'caption': 'Level 3 Explosive',
+                         'description':'Christoph has send you a gift! Christoph would be happy if you would return the favor.',
+                         'message':'',
                          'picture':'http://static.social.io/images/logo.png',
                          'action_link':'Accept Gift',
                          'params':[{'name':'giftId', value:'abcde'}]};
@@ -111,11 +115,11 @@ $friends = $socialio->getFriends("user_id,name,picture");
         };
 
         function sendRequest(filters){
-            var reqObj = {'method':'request.send', 'title':'Check this out!',
-                'name':'Awesome Gift Request',
-                'caption': 'I\'m a caption',
-                'description':'I am in good mode!',
-                'message':'Hello!',
+            var reqObj = {'method':'request.send', 'title':'Send this gift to a friend!',
+                'name':'Aerosol Can',
+                'caption': 'Level 3 Explosive',
+                'description':'Christoph has send you a gift! Christoph would be happy if you would return the favor.',
+                'message':'',
                 'picture':'http://static.social.io/images/logo.png',
                 'action_link':'Accept Gift',
                 'params':[{'name':'giftId', value:'abcde'}]};

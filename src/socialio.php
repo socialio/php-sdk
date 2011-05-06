@@ -177,8 +177,14 @@ class Socialio {
     return $this->api("/", array("fields" => $fields));
   }
 
-  public function getFriends($fields) {
-    return $this->api("/friends", array("fields" => $fields));
+  public function getFriends($fields, $list = "app_friends") {
+    $params = array("fields" => $fields);
+
+    if (strcmp($list, "app_friends") != 0) {
+        $params["list"] = $list;
+    }
+
+    return $this->api("/friends", $params);
   }
 
   public function getUserParams() {
