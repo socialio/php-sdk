@@ -32,7 +32,7 @@ try {
   exit();
 }
 
-$friends = $socialio->getFriends("user_id,name,picture");
+$friends = $socialio->getFriends("user_id,name,picture", "all_friends");
 ?>
 
 <!doctype html>
@@ -70,7 +70,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
             SIO.ui({'method':'friends.invite',
                     'title':'Select friends to send social.io invites.',
                     'message':'Hello friends, check this out!',
-                    'description':'Add friends to get more gifts',
+                    'description':'Christoph wants to play with you. social.io makes it easy to become rich and famous - maybe',
                     'picture':'http://static.social.io/images/logo.png',
                     'params':[{'name':'foo', value:'bar'}]},
                     function(response){alert(printf(response));});
@@ -83,7 +83,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
                 'description':'This a description.',
                 'message':'Please send me some chocolate!',
                 'picture':'http://static.social.io/images/logo.png',
-                'action_link':'Send Chocolate',
+                'action_link':'Send them Chocolate',
                 'params':[{'name':'trackCode', value:'abcde'}, {name:'someId', value:'1234'}]},
                   function(response){alert(response.status);});
         };
@@ -96,7 +96,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
                 'description':'This a description.',
                 'message':'Please send me some chocolate!',
                 'picture':'http://static.social.io/images/logo.png',
-                'action_link':'Send Chocolate',
+                'action_link':'Send some Chocolate',
                 'params':[{'name':'trackCode', value:'abcde'}, {name:'someId', value:'1234'}]},
                   function(response){alert(response.status);});
         };
@@ -152,6 +152,7 @@ $friends = $socialio->getFriends("user_id,name,picture");
         <div><a href="#" onclick="postToWall(); return false;">Post To A Friends Wall</a></div>
         <div><a href="#" onclick="sendRequestToAFriend(); return false;">Send Request to a Friend</a></div>
         <div><a href="#" onclick="sendRequest(['app_non_users']); return false;">Send Request to a Non App Friend</a></div>
+        <div><a href="#" onclick="sendRequest([{'name':'Custom Filter', 'user_ids':['<?php echo($friends['friends'][0]['user_id']) ?>','<?php echo($friends['friends'][0]['user_id']) ?>']}]); return false;">Send Request with Custom Filter</a></div>
         <div><a href="#" onclick="sendRequest(); return false;">Send Request</a></div>
         <div><a href="#" onclick="loadUserProfile(); return false;">User Profile</a></div>
         <div><a href="#" onclick="loadUserFriends(); return false;">User Friends</a></div>
