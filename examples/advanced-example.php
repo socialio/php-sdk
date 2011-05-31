@@ -152,7 +152,7 @@ $friends = $socialio->getFriends("user_id,name,picture", "all_friends");
         <div><a href="#" onclick="postToWall(); return false;">Post To A Friends Wall</a></div>
         <div><a href="#" onclick="sendRequestToAFriend(); return false;">Send Request to a Friend</a></div>
         <div><a href="#" onclick="sendRequest(['app_non_users']); return false;">Send Request to a Non App Friend</a></div>
-        <div><a href="#" onclick="sendRequest([{'name':'Custom Filter', 'user_ids':['<?php echo($friends['friends'][0]['user_id']) ?>','<?php echo($friends['friends'][0]['user_id']) ?>']}]); return false;">Send Request with Custom Filter</a></div>
+        <div><a href="#" onclick="sendRequest([{'name':'Custom Filter', 'user_ids':['<?php echo($friends['friends'][0]['user_id']) ?>','<?php echo($friends['friends'][1]['user_id']) ?>']}]); return false;">Send Request with Custom Filter</a></div>
         <div><a href="#" onclick="sendRequest(); return false;">Send Request</a></div>
         <div><a href="#" onclick="loadUserProfile(); return false;">User Profile</a></div>
         <div><a href="#" onclick="loadUserFriends(); return false;">User Friends</a></div>
