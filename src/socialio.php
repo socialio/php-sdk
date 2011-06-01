@@ -225,11 +225,11 @@ class Socialio {
       Header( "Location: " . $response["uri"]);
       exit();
     } else if(strcmp($response["execute"], "output") == 0) {
-        $headers = $response["headers"];
+        $headers = isset($response["headers"]) ? $response["headers"] : array();
         foreach($headers as $key => $value) {
             Header($key.': '.$value);            
         }
-        $cookies = $response["cookies"];
+        $cookies = isset($response["cookies"]) ? $response["cookies"] : array();
         foreach($cookies as $key => $value) {
             setcookie($key, $value);
         }
