@@ -158,8 +158,9 @@ $friends = $socialio->getFriends("user_id,name,picture", "all_friends");
         <div><a href="#" onclick="loadUserFriends(); return false;">User Friends</a></div>
         <div><a href="#" onclick="resizeHeight(200); return false;">Resize Height to 200px</a></div>
     </p>
-    <p><h4>User Profile:</h4> <?php $profile = $socialio->getUserProfile("user_id,name,picture");
+    <p><h4>User Profile:</h4> <?php $profile = $socialio->getUserProfile("user_id,name,picture,locale");
                             echo("<table border='1'>");
+                            echo("<tr><td>id</td><td>".$profile["user_id"]."</td></tr>");
                             echo("<tr><td>name</td><td>".$profile["name"]."</td></tr>");
                             echo("<tr><td>picture</td><td>".$profile["picture"]."</td></tr>");
                             echo("</table>");
