@@ -22,6 +22,7 @@ $socialio = new Socialio(array(
   'clientId' => 'YOUR CLIENT NAME',
   'password' => 'YOUR CLIENT PASSWORD',
   'appName' => 'YOUR Social.io APP NAME'
+  'appSecret' => 'YOUR Social.io APP SECRET'
 ));
 
 try {

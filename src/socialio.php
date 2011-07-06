@@ -81,6 +81,11 @@ class Socialio {
   protected $appName;
   
   /**
+   * The Social.io Application Secret.
+   */
+  protected $appSecret;
+  
+  /**
    * The message that should be shown while a user is redirected during the connect process.
    */
   protected $redirectMessage;
@@ -123,6 +128,7 @@ class Socialio {
     $this->setClientId($config['clientId']);
     $this->setPassword($config['password']);
     $this->setAppName($config['appName']);
+    $this->setAppSecret($config['appSecret']);
     if (isset($config['redirectMessage'])) {
       $this->setRedirectMessage($config['redirectMessage']);
     } else {
@@ -205,6 +211,16 @@ class Socialio {
     return $this->api("/request", null, "DELETE");
   }
 
+  public function verifySignature($json) {
+    $decoded = json_decode($json, true);
+    $signature  = $decoded["sig"];
+    unset($decoded["sig"]);
+    $decoded["secret"] = $this->getAppSecret();
+    ksort($decoded); 
+    $orderedJson = json_encode($decoded);
+    return $signature === sha1($orderedJson);
+  }
+
   //////////////////////////////////////////////////////////////////////////////
   // Private functions
   //////////////////////////////////////////////////////////////////////////////
@@ -259,6 +275,15 @@ class Socialio {
 
   public function getAppName() {
     return $this->appName;
+  }
+
+  private function setAppSecret($appSecret) {
+    $this->appSecret = $appSecret;
+    return $this;
+  }
+
+  public function getAppSecret() {
+    return $this->appSecret;
   }
 
   private function setRedirectMessage($redirectMessage) {
