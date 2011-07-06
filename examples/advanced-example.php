@@ -33,7 +33,7 @@ try {
   exit();
 }
 
-$friends = $socialio->getFriends("user_id,name,picture");
+$friends = $socialio->getFriends("user_id,name,picture", "all_friends");
 ?>
 
 <!doctype html>
@@ -68,17 +68,21 @@ $friends = $socialio->getFriends("user_id,name,picture");
         };
 
         function inviteFriends(){
-            SIO.ui({'method':'friends.invite', 'title':'Invite your friends!',
-                'message':'Hello friends, check this out!', 'picture':'http://static.social.io/images/logo.png',
-                'params':[{name:'foo', value:'bar'}]}, function(response){alert(printf(response));});
+            SIO.ui({'method':'friends.invite',
+                    'title':'Select friends to send social.io invites.',
+                    'message':'Hello friends, check this out!',
+                    'description':'Christoph wants to play with you. social.io makes it easy to become rich and famous - maybe',
+                    'picture':'http://static.social.io/images/logo.png',
+                    'params':[{'name':'foo', value:'bar'}]},
+                    function(response){alert(printf(response));});
         };
 
         function publishStream(){
-            SIO.ui({'method':'feed.publish', 'title':'Check this out!',
+            SIO.ui({'method':'feed.publish', 'title':'Ask your friends to send you some chocolate!',
                 'name':'Christoph needs the finest chocolate for Andre!',
                 'caption': 'Christoph needs gourmet chocolate for Andre\'s signature recipes!',
                 'description':'This a description.',
-                'message':'Bitte helft mir!',
+                'message':'Please send me some chocolate!',
                 'picture':'http://static.social.io/images/logo.png',
                 'action_link':'Send them Chocolate',
                 'params':[{'name':'trackCode', value:'abcde'}, {name:'someId', value:'1234'}]},
@@ -86,25 +90,25 @@ $friends = $socialio->getFriends("user_id,name,picture");
         };
 
         function postToWall(){
-            SIO.ui({'method':'wall.post', 'title':'Check this out!',
-                'name':'Awesome Wall Post',
+            SIO.ui({'method':'wall.post', 'title':'Ask your friends to send you some chocolate!',
+                'name':'Christoph needs the finest chocolate for Andre!',
                 'recipient_ids':['<?php echo($friends['friends'][0]['user_id']) ?>'],
-                'caption': 'I\'m a caption',
-                'description':'I am in good mode!',
-                'message':'Hello!',
+                'caption': 'Christoph needs gourmet chocolate for Andre\'s signature recipes!',
+                'description':'This a description.',
+                'message':'Please send me some chocolate!',
                 'picture':'http://static.social.io/images/logo.png',
-                'action_link':'Click Me',
+                'action_link':'Send some Chocolate',
                 'params':[{'name':'trackCode', value:'abcde'}, {name:'someId', value:'1234'}]},
                   function(response){alert(response.status);});
         };
 
         function sendRequestToAFriend(){
-           var reqObj = {'method':'request.send', 'title':'Check this out!',
-                         'name':'Awesome Gift Request',
+           var reqObj = {'method':'request.send', 'title':'Send this gift to a friend!',
+                         'name':'Aerosol Can',
                          'recipient_ids':['<?php echo($friends['friends'][0]['user_id']) ?>'],
-                         'caption': 'I\'m a caption',
-                         'description':'I am in good mode!',
-                         'message':'Hello!',
+                         'caption': 'Level 3 Explosive',
+                         'description':'Christoph has send you a gift! Christoph would be happy if you would return the favor.',
+                         'message':'',
                          'picture':'http://static.social.io/images/logo.png',
                          'action_link':'Accept Gift',
                          'params':[{'name':'giftId', value:'abcde'}]};
@@ -112,11 +116,11 @@ $friends = $socialio->getFriends("user_id,name,picture");
         };
 
         function sendRequest(filters){
-            var reqObj = {'method':'request.send', 'title':'Check this out!',
-                'name':'Awesome Gift Request',
-                'caption': 'I\'m a caption',
-                'description':'I am in good mode!',
-                'message':'Hello!',
+            var reqObj = {'method':'request.send', 'title':'Send this gift to a friend!',
+                'name':'Aerosol Can',
+                'caption': 'Level 3 Explosive',
+                'description':'Christoph has send you a gift! Christoph would be happy if you would return the favor.',
+                'message':'',
                 'picture':'http://static.social.io/images/logo.png',
                 'action_link':'Accept Gift',
                 'params':[{'name':'giftId', value:'abcde'}]};
@@ -129,6 +133,10 @@ $friends = $socialio->getFriends("user_id,name,picture");
         function resizeHeight(height) {
             SIO.ui({'method':'window.resize', 'height':height});
         }
+
+        function purchaseCredits(){
+            SIO.ui({'method':'credits.purchase'}, function(response){alert(response.status)});
+        };
 
         function printf(obj){
             var output = '';
@@ -149,15 +157,19 @@ $friends = $socialio->getFriends("user_id,name,picture");
         <div><a href="#" onclick="postToWall(); return false;">Post To A Friends Wall</a></div>
         <div><a href="#" onclick="sendRequestToAFriend(); return false;">Send Request to a Friend</a></div>
         <div><a href="#" onclick="sendRequest(['app_non_users']); return false;">Send Request to a Non App Friend</a></div>
+        <div><a href="#" onclick="sendRequest([{'name':'Custom Filter', 'user_ids':['<?php echo($friends['friends'][0]['user_id']) ?>','<?php echo($friends['friends'][1]['user_id']) ?>']}]); return false;">Send Request with Custom Filter</a></div>
         <div><a href="#" onclick="sendRequest(); return false;">Send Request</a></div>
         <div><a href="#" onclick="loadUserProfile(); return false;">User Profile</a></div>
         <div><a href="#" onclick="loadUserFriends(); return false;">User Friends</a></div>
         <div><a href="#" onclick="resizeHeight(200); return false;">Resize Height to 200px</a></div>
+        <div><a href="#" onclick="purchaseCredits(); return false;">Purchase Credits</a></div>
     </p>
-    <p><h4>User Profile:</h4> <?php $profile = $socialio->getUserProfile("user_id,name,picture");
+    <p><h4>User Profile:</h4> <?php $profile = $socialio->getUserProfile("user_id,name,picture,locale");
                             echo("<table border='1'>");
+                            echo("<tr><td>id</td><td>".$profile["user_id"]."</td></tr>");
                             echo("<tr><td>name</td><td>".$profile["name"]."</td></tr>");
                             echo("<tr><td>picture</td><td>".$profile["picture"]."</td></tr>");
+                            echo("<tr><td>locale</td><td>".$profile["locale"]."</td></tr>");
                             echo("</table>");
                             ?></p>
 

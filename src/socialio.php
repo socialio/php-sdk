@@ -183,8 +183,14 @@ class Socialio {
     return $this->api("/", array("fields" => $fields));
   }
 
-  public function getFriends($fields) {
-    return $this->api("/friends", array("fields" => $fields));
+  public function getFriends($fields, $list = "app_friends") {
+    $params = array("fields" => $fields);
+
+    if (strcmp($list, "app_friends") != 0) {
+        $params["list"] = $list;
+    }
+
+    return $this->api("/friends", $params);
   }
 
   public function getUserParams() {
@@ -235,11 +241,11 @@ class Socialio {
       Header( "Location: " . $response["uri"]);
       exit();
     } else if(strcmp($response["execute"], "output") == 0) {
-        $headers = $response["headers"];
+        $headers = isset($response["headers"]) ? $response["headers"] : array();
         foreach($headers as $key => $value) {
             Header($key.': '.$value);            
         }
-        $cookies = $response["cookies"];
+        $cookies = isset($response["cookies"]) ? $response["cookies"] : array();
         foreach($cookies as $key => $value) {
             setcookie($key, $value);
         }
